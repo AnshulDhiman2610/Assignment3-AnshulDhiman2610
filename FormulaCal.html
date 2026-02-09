@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Formula Calculator</title>
+    <style>
+
+/* page background */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+
+/* glass container */
+.container {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    padding: 25px;
+    width: 420px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    animation: fadeIn 1s ease;
+}
+
+
+/* heading */
+h2 {
+    text-align: center;
+    color: white;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+/* dropdown base */
+select {
+    width: 100%;
+    padding: 10px 40px 10px 12px; 
+    margin-top: 12px;
+
+    border-radius: 12px;
+    border: none;
+    outline: none;
+
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+    cursor: pointer;
+
+    /* gradient background */
+    background: linear-gradient(135deg, #43cea2, #185a9d);
+
+    transition: all 0.3s ease;
+
+    /* remove default styling */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    /* custom arrow */
+    background-image:
+        linear-gradient(135deg, #43cea2, #185a9d);
+    background-repeat: no-repeat;
+    background-position: center, right 12px center;
+    background-size: cover, 18px;
+}
+
+
+/* hover*/
+select:hover {
+    background-image:
+        linear-gradient(135deg, #ff9966, #ff5e62),
+}
+
+
+/* focus selected*/
+select:focus,
+select:active {
+    background-image:
+        linear-gradient(135deg, #00c6ff, #0072ff);
+}
+
+
+/* options */
+select option {
+    background: #1e1e1e;
+    color: white;
+}
+
+
+/* input fields */
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 12px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+
+/* focus animation */
+input:focus {
+    box-shadow: 0 0 10px #00f2fe;
+    transform: scale(1.02);
+}
+
+
+/* result field */
+input[readonly] {
+    background: linear-gradient(135deg,#ffdde1,#84fab0);
+    font-weight: bold;
+    text-align: center;
+    color: black;
+}
+
+
+/* buttons */
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+
+/* calculate button gradient */
+button:nth-of-type(1) {
+    background: linear-gradient(135deg, #fc466b,#3f5efb);
+}
+
+
+/* reset button gradient */
+button:nth-of-type(2) {
+    background: linear-gradient(135deg, #fc466b, #3f5efb);
+}
+
+
+/* hover rainbow animation */
+button:hover {
+    background: linear-gradient(
+        980deg,
+        #ff9a9e,
+        #fad0c4,
+        #fad0c4,
+        #fbc2eb,
+        #a18cd1,
+        #84fab0
+    );
+    background-size: 400% 400%;
+    animation: gradientMove 4s ease infinite;
+    transform: scale(1.05);
+}
+
+
+/* input appera animation */
+#inputs input {
+    animation: slideUp 0.5s ease;
+}
+
+
+/* animations*/
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% }
+    50% { background-position: 100% }
+    100% { background-position: 0% }
+}
+
+/* shared size for allcontrols */
+select,
+input,
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 14px;
+    border: none;
+    font-size: 15px;
+    box-sizing: border-box;  
+}
+
+
+/* result field fixed*/
+#result {
+    background: linear-gradient(135deg,#00f2fe, #38ef7d);
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+
+    /* make same height as buttons */
+    height: 45px;
+
+    /* prevent extra stretch */
+    display: block;
+}
+
+
+</style>
+
+</head>
+<body>
+<div class="container">
+    <h2>Formula Calculator</h2>
+
+    <!--area formulas type -->
+    <div id="areaDiv">
+        <select id="area" onchange="handleCategory('area')">
+            <option value="">-- Area --</option>
+            <option value="square">Square</option>
+            <option value="rectangle">Rectangle</option>
+            <option value="triangle">Triangle</option>
+            <option value="circle">Circle</option>
+            <option value="parallelogram">Parallelogram</option>
+            <option value="trapezoid">Trapezoid</option>
+        </select>
+    </div>
+
+    <!-- volume formulas type -->
+    <div id="volumeDiv">
+        <select id="volume" onchange="handleCategory('volume')">
+            <option value="">-- Volume --</option>
+            <option value="cube">Cube</option>
+            <option value="cuboid">Cuboid</option>
+            <option value="cylinder">Cylinder</option>
+            <option value="cone">Cone</option>
+            <option value="sphere">Sphere</option>
+            <option value="hemisphere">Hemisphere</option>
+        </select>
+    </div>
+
+    <!-- surface area formulas type -->
+    <div id="surfaceDiv">
+        <select id="surface" onchange="handleCategory('surface')">
+            <option value="">-- Surface Area --</option>
+            <option value="cube">Cube</option>
+            <option value="cuboid">Cuboid</option>
+            <option value="cylinder">Cylinder</option>
+            <option value="cone">Cone</option>
+            <option value="sphere">Sphere</option>
+            <option value="hemisphere">Hemisphere</option>
+        </select>
+    </div>
+
+    <!-- CSA formula types-->
+    <div id="csaDiv">
+        <select id="csa" onchange="handleCategory('csa')">
+            <option value="">-- Curved Surface Area --</option>
+            <option value="cylinder">Cylinder</option>
+            <option value="cone">Cone</option>
+            <option value="hemisphere">Hemisphere</option>
+        </select>
+    </div>
+
+    <div id="inputs"></div>
+
+    <button onclick="calculate()">Calculate</button>
+
+    <input type="text" id="result" placeholder="Result" readonly>
+
+
+    <!--reset button-->
+<button onclick="resetCalculator()" style="margin-top:10px;">
+    Reset
+</button>
+
+
+</div>
+
+<script src="FormulaCal.js"></script>
+
+</body>
+</html>
